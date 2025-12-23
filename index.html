@@ -9,37 +9,22 @@
 
 <header>
   <h1>🍽 Recipe Book</h1>
-  <input type="text" id="searchInput" placeholder="Search recipes">
+  <input type="text" id="searchInput" placeholder="Search recipes...">
 </header>
 
 <section class="container">
+
   <div class="form-card">
     <h2>Add Recipe</h2>
     <input id="name" placeholder="Recipe Name">
-    <textarea id="ingredients" placeholder="Ingredients"></textarea>
+    <textarea id="ingredients" placeholder="Ingredients (press Enter for new line)"></textarea>
     <textarea id="steps" placeholder="Preparation Steps"></textarea>
-    <input type="file" id="image">
-    <button onclick="addRecipe()">Save</button>
+    <input type="file" id="image" accept="image/*">
+    <button id="saveBtn">Save</button>
   </div>
 
   <div id="recipeList" class="recipe-list"></div>
 
-<!-- Recipe Modal -->
-<div id="recipeModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">×</span>
-    <img id="modalImg">
-    <h2 id="modalTitle"></h2>
-
-    <h4>🧾 Ingredients</h4>
-    <p id="modalIngredients"></p>
-
-    <h4>👩‍🍳 Preparation Steps</h4>
-    <p id="modalSteps"></p>
-  </div>
-</div>
 </section>
 
-<script type="module" src="script.js"></script>
-</body>
-</html>
+<!-

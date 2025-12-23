@@ -1,14 +1,20 @@
 body {
+  font-family: Arial, sans-serif;
   margin: 0;
-  font-family: Arial;
   background: #f4f4f4;
 }
 
 header {
   background: #ff7043;
+  padding: 15px;
   color: white;
   text-align: center;
-  padding: 20px;
+}
+
+header input {
+  padding: 8px;
+  width: 60%;
+  margin-top: 10px;
 }
 
 .container {
@@ -20,28 +26,30 @@ header {
 .form-card {
   width: 30%;
   background: white;
-  padding: 20px;
-  border-radius: 10px;
+  padding: 15px;
+  border-radius: 5px;
 }
 
 .form-card input,
-.form-card textarea {
+.form-card textarea,
+.form-card button {
   width: 100%;
-  margin: 8px 0;
+  margin-bottom: 10px;
   padding: 8px;
 }
 
 .recipe-list {
   width: 70%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 15px;
 }
 
 .recipe-card {
   background: white;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 5px;
+  text-align: center;
 }
 
 .recipe-card img {
@@ -49,40 +57,42 @@ header {
   height: 150px;
   object-fit: cover;
 }
-.recipe-card {
-  background: white;
-  border-radius: 12px;
-  padding: 12px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-  transition: transform 0.3s;
-}
-
-.recipe-card:hover {
-  transform: translateY(-6px);
-}
-
-.recipe-card h3 {
-  margin: 8px 0;
-  color: #ff7043;
-}
 
 .view-btn {
-  background: #ff7043;
-  color: white;
-  border: none;
-  padding: 8px;
-  width: 100%;
-  border-radius: 6px;
-  cursor: pointer;
+  margin-top: 10px;
+  padding: 6px;
 }
 
-/* Modal improvements */
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+}
+
 .modal-content {
-  max-height: 90vh;
-  overflow-y: auto;
+  background: white;
+  width: 60%;
+  margin: 5% auto;
+  padding: 20px;
+  border-radius: 5px;
 }
 
-.modal-content h4 {
-  margin-top: 15px;
-  color: #ff7043;
+.modal-content img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+}
+
+.close {
+  float: right;
+  cursor: pointer;
+  font-size: 22px;
+}
+
+/* Preserve Enter key formatting */
+#modalIngredients,
+#modalSteps {
+  white-space: pre-line;
 }

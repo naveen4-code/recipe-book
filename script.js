@@ -6,13 +6,25 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const recipeRef = collection(db, "recipes");
-const recipeList = document.getElementById("recipeList");
 
-// ADD RECIPE
-window.addRecipe = async function () {
-  const name = document.getElementById("name").value;
-  const ingredients = document.getElementById("ingredients").value;
-  const steps = document.getElementById("steps").value;
+const recipeList = document.getElementById("recipeList");
+const searchInput = document.getElementById("searchInput");
+const saveBtn = document.getElementById("saveBtn");
+
+const modal = document.getElementById("recipeModal");
+const modalTitle = document.getElementById("modalTitle");
+const modalIngredients = document.getElementById("modalIngredients");
+const modalSteps = document.getElementById("modalSteps");
+const modalImg = document.getElementById("modalImg");
+const closeBtn = document.querySelector(".close");
+
+let allRecipes = [];
+
+// ➕ Add Recipe
+saveBtn.addEventListener("click", async () => {
+  const name = document.getElementById("name").value.trim();
+  const ingredients = document.getElementById("ingredients").value.trim();
+  const steps = document.getElementById("steps").value.trim();
   const imageFile = document.getElementById("image").files[0];
 
   if (!name || !ingredients || !steps || !imageFile) {
@@ -29,21 +41,24 @@ window.addRecipe = async function () {
       imageBase64: reader.result,
       createdAt: Date.now()
     });
-
     loadRecipes();
   };
-
   reader.readAsDataURL(imageFile);
-};
+});
 
-// LOAD RECIPES (SAFE VERSION)
+// 📥 Load Recipes
 async function loadRecipes() {
   const snapshot = await getDocs(recipeRef);
+  allRecipes = [];
+  snapshot.forEach(doc => allRecipes.push(doc.data()));
+  renderRecipes(allRecipes);
+}
+
+// 🧩 Render Cards (NO INLINE JS)
+function renderRecipes(recipes) {
   recipeList.innerHTML = "";
 
-  snapshot.forEach(doc => {
-    const r = doc.data();
-
+  recipes.forEach(r => {
     const card = document.createElement("div");
     card.className = "recipe-card";
 
@@ -57,30 +72,40 @@ async function loadRecipes() {
     btn.className = "view-btn";
     btn.innerText = "View Recipe";
 
-    // ✅ SAFE EVENT HANDLER
     btn.addEventListener("click", () => {
-      openModal(r.name, r.ingredients, r.steps, r.imageBase64);
+      openModal(r);
     });
 
-    card.appendChild(img);
-    card.appendChild(title);
-    card.appendChild(btn);
-
+    card.append(img, title, btn);
     recipeList.appendChild(card);
   });
 }
 
+// 🔍 Search
+searchInput.addEventListener("input", () => {
+  const q = searchInput.value.toLowerCase();
+  const filtered = allRecipes.filter(r =>
+    r.name.toLowerCase().includes(q) ||
+    r.ingredients.toLowerCase().includes(q)
+  );
+  renderRecipes(filtered);
+});
+
+// 🪟 Modal
+function openModal(recipe) {
+  modal.style.display = "block";
+  modalTitle.innerText = recipe.name;
+  modalIngredients.innerText = recipe.ingredients;
+  modalSteps.innerText = recipe.steps;
+  modalImg.src = recipe.imageBase64;
+}
+
+closeBtn.addEventListener("click", () => {
+  modal.style.display = "none";
+});
+
+window.onclick = e => {
+  if (e.target === modal) modal.style.display = "none";
+};
+
 loadRecipes();
-
-// MODAL FUNCTIONS
-window.openModal = function (name, ingredients, steps, image) {
-  recipeModal.style.display = "block";
-  modalTitle.innerText = name;
-  modalIngredients.innerText = ingredients;
-  modalSteps.innerText = steps;
-  modalImg.src = image;
-};
-
-window.closeModal = function () {
-  recipeModal.style.display = "none";
-};
