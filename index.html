@@ -23,6 +23,21 @@
   </div>
 
   <div id="recipeList" class="recipe-list"></div>
+
+<!-- Recipe Modal -->
+<div id="recipeModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">×</span>
+    <img id="modalImg">
+    <h2 id="modalTitle"></h2>
+
+    <h4>🧾 Ingredients</h4>
+    <p id="modalIngredients"></p>
+
+    <h4>👩‍🍳 Preparation Steps</h4>
+    <p id="modalSteps"></p>
+  </div>
+</div>
 </section>
 
 <script type="module" src="script.js"></script>

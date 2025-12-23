@@ -49,3 +49,40 @@ header {
   height: 150px;
   object-fit: cover;
 }
+.recipe-card {
+  background: white;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+
+.recipe-card:hover {
+  transform: translateY(-6px);
+}
+
+.recipe-card h3 {
+  margin: 8px 0;
+  color: #ff7043;
+}
+
+.view-btn {
+  background: #ff7043;
+  color: white;
+  border: none;
+  padding: 8px;
+  width: 100%;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Modal improvements */
+.modal-content {
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-content h4 {
+  margin-top: 15px;
+  color: #ff7043;
+}
