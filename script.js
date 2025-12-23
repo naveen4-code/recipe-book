@@ -6,7 +6,9 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const recipeRef = collection(db, "recipes");
+const recipeList = document.getElementById("recipeList");
 
+// ADD RECIPE
 window.addRecipe = async function () {
   const name = document.getElementById("name").value;
   const ingredients = document.getElementById("ingredients").value;
@@ -27,11 +29,14 @@ window.addRecipe = async function () {
       imageBase64: reader.result,
       createdAt: Date.now()
     });
+
     loadRecipes();
   };
+
   reader.readAsDataURL(imageFile);
 };
 
+// LOAD RECIPES (SAFE VERSION)
 async function loadRecipes() {
   const snapshot = await getDocs(recipeRef);
   recipeList.innerHTML = "";
@@ -39,27 +44,36 @@ async function loadRecipes() {
   snapshot.forEach(doc => {
     const r = doc.data();
 
-    recipeList.innerHTML += `
-      <div class="recipe-card">
-        <img src="${r.imageBase64}">
-        <h3>${r.name}</h3>
-        <button class="view-btn"
-          onclick="openModal(
-            '${r.name}',
-            '${r.ingredients.replace(/'/g, "\\'")}',
-            '${r.steps.replace(/'/g, "\\'")}',
-            '${r.imageBase64}'
-          )">
-          View Recipe
-        </button>
-      </div>
-    `;
+    const card = document.createElement("div");
+    card.className = "recipe-card";
+
+    const img = document.createElement("img");
+    img.src = r.imageBase64;
+
+    const title = document.createElement("h3");
+    title.innerText = r.name;
+
+    const btn = document.createElement("button");
+    btn.className = "view-btn";
+    btn.innerText = "View Recipe";
+
+    // ✅ SAFE EVENT HANDLER
+    btn.addEventListener("click", () => {
+      openModal(r.name, r.ingredients, r.steps, r.imageBase64);
+    });
+
+    card.appendChild(img);
+    card.appendChild(title);
+    card.appendChild(btn);
+
+    recipeList.appendChild(card);
   });
 }
 
-
 loadRecipes();
-window.openModal = function(name, ingredients, steps, image) {
+
+// MODAL FUNCTIONS
+window.openModal = function (name, ingredients, steps, image) {
   recipeModal.style.display = "block";
   modalTitle.innerText = name;
   modalIngredients.innerText = ingredients;
@@ -67,6 +81,6 @@ window.openModal = function(name, ingredients, steps, image) {
   modalImg.src = image;
 };
 
-window.closeModal = function() {
+window.closeModal = function () {
   recipeModal.style.display = "none";
 };
